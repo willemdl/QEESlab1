@@ -1,9 +1,10 @@
-%dit is het hoofdscript.
-clear all
-close all
-%% loading of files 
+function Q3function(foldername)
+%Q3FUNCTION Summary of this function goes here
+%   Detailed explanation goes here
+
 %give the folder containing the .txt files
-folder = "results12-03/Q1_results_rik/transport_time";
+% folder = "results12-03/Q3_results_rik/transport_time";
+folder = ['results12-03/Q3_results_rik/' foldername '/transport_time'];
 Files=dir(folder);
 NoFiles= length(Files);
 FileOffset = 3; %how many files are in the map that are useless
@@ -14,14 +15,14 @@ for k=1:(NoFiles-FileOffset)
     FileNames = Files(k+FileOffset).name;
     info.Fname(k) = convertCharsToStrings(FileNames);%.Fname = File name
     FilePlace = [Files(k+FileOffset).folder '/' Files(k+FileOffset).name];
-    info.data(:,k) = importdata(FilePlace) * multi;
+    info.data(:,k) = importdata(FilePlace) *multi;
 end
 %% adjusting data 
 
 expression = '(?<size>\d+)(?<byte>\D+)....';
 for k=1:(NoFiles-FileOffset)
     temp(k)= regexp(info.Fname(k),expression,'names');
-    info.label(k) = extractBetween(info.Fname(k),"time_","yte");
+    info.label(k) = upper(extractBetween(info.Fname(k),"time_","yte"));
     info.size(k) = str2double(temp(k).size);
     info.byte(k) = temp(k).byte;
 end
@@ -52,18 +53,18 @@ info.data = info.data(:,ordering);
 %% boxplot
 figure();
 boxplot(info.data);
-ylim([0 4.5]);
+ylim([0 100]);
 set(gca,'XTickLabel',info.label);
 xlabel('Transfersize')
 ylabel('Latency [ms]')
-title('Boxplot of the end to end latency with different packetsizes.')
-saveas(gcf,'Figures/Q1/Boxplot3.png')
+title(foldername)
+Figname =['Figures/Q3/' foldername '_Boxplot1.jpg'];
 
-figure();
-boxplot(info.data);
-ylim([0 0.6]);
-set(gca,'XTickLabel',info.label);
-xlabel('Transfersize')
-ylabel('Latency [ms]')
-title('Boxplot of the end to end latency with different packetsizes zoomed in.')
-saveas(gcf,'Figures/Q1/Boxplot4.png')
+% saveas(gcf,'Figures/Q3/Boxplot1.png')
+% saveas(gcf, Figname);
+
+
+
+
+end
+
