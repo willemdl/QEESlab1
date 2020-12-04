@@ -21,7 +21,7 @@ end
 expression = '(?<size>\d+)(?<byte>\D+)....';
 for k=1:(NoFiles-FileOffset)
     temp(k)= regexp(info.Fname(k),expression,'names');
-    info.label(k) = extractBetween(info.Fname(k),"time_","yte");
+    info.label(k) = upper(extractBetween(info.Fname(k),"time_","yte"));
     info.size(k) = str2double(temp(k).size);
     info.byte(k) = temp(k).byte;
 end
