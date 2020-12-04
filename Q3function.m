@@ -59,8 +59,6 @@ xlabel('Transfersize')
 ylabel('Latency [ms]')
 title(foldername)
 Figname =['Figures/Q3/' foldername '_Boxplot1.jpg'];
-
-% saveas(gcf,'Figures/Q3/Boxplot1.png')
 % saveas(gcf, Figname);
 
 
