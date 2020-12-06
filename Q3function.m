@@ -1,6 +1,9 @@
-function Q3function(foldername)
+function Q3function(foldername, SelectedSizes)
 %Q3FUNCTION Summary of this function goes here
 %   Detailed explanation goes here
+
+
+%% reading data from folder/files
 
 %give the folder containing the .txt files
 % folder = "results12-03/Q3_results_rik/transport_time";
@@ -17,7 +20,7 @@ for k=1:(NoFiles-FileOffset)
     FilePlace = [Files(k+FileOffset).folder '/' Files(k+FileOffset).name];
     info.data(:,k) = importdata(FilePlace) *multi;
 end
-%% adjusting data 
+%% adjusting data
 
 expression = '(?<size>\d+)(?<byte>\D+)....';
 for k=1:(NoFiles-FileOffset)
@@ -40,6 +43,15 @@ for k=1:(NoFiles-FileOffset)
     end
 end
 
+%% setting the columns to show in the figures
+if (SelectedSizes ==0)
+    SelectedSizes = 1:(NoFiles-FileOffset);
+else
+    if(max(SelectedSizes)>(NoFiles-FileOffset) || min(SelectedSizes)<=0)
+       error("SelectedSizes vector is incorrect. must be between 1 and number of files.");
+    end
+end
+
 %% ordering of all info data by size of the packets
 [rsizesorted,ordering] = sort(info.rsize(:));
 info.Fname = info.Fname(ordering);
@@ -51,11 +63,15 @@ info.data = info.data(:,ordering);
 % test = natsort(newStr); %https://nl.mathworks.com/matlabcentral/answers/229757-sorting-an-array-of-strings-based-on-number-pattern
 
 
+
 %% boxplot
 figure();
-boxplot(info.data);
-ylim([0 15]);
-set(gca,'XTickLabel',info.label);
+data = info.data(:,SelectedSizes);
+boxplot(data);
+Ymax = max(prctile(data, 99))+0.1;
+Ymin = min(prctile(data, 1));
+ylim([0 Ymax]);
+set(gca,'XTickLabel',info.label(SelectedSizes));
 xlabel('Transfersize')
 ylabel('Latency [ms]')
 title(foldername)
