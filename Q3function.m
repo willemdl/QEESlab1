@@ -4,7 +4,7 @@ function Q3function(foldername)
 
 %give the folder containing the .txt files
 % folder = "results12-03/Q3_results_rik/transport_time";
-folder = ['results12-03/Q3_results_rik/' foldername '/transport_time'];
+folder = ['results12-06/Q3_results_rik/' foldername '/transport_time'];
 Files=dir(folder);
 NoFiles= length(Files);
 FileOffset = 3; %how many files are in the map that are useless
@@ -26,6 +26,7 @@ for k=1:(NoFiles-FileOffset)
     info.size(k) = str2double(temp(k).size);
     info.byte(k) = temp(k).byte;
 end
+
 for k=1:(NoFiles-FileOffset)
     
     if((contains(info.Fname(k), "Mbyte"))==1)
@@ -45,7 +46,7 @@ info.Fname = info.Fname(ordering);
 info.label = info.label(ordering);
 info.size = info.size(ordering);
 info.byte = info.byte(ordering);
-info.rsize = info.rsize;
+info.rsize = info.rsize(ordering);
 info.data = info.data(:,ordering);
 % test = natsort(newStr); %https://nl.mathworks.com/matlabcentral/answers/229757-sorting-an-array-of-strings-based-on-number-pattern
 
@@ -53,13 +54,13 @@ info.data = info.data(:,ordering);
 %% boxplot
 figure();
 boxplot(info.data);
-ylim([0 100]);
+ylim([0 15]);
 set(gca,'XTickLabel',info.label);
 xlabel('Transfersize')
 ylabel('Latency [ms]')
 title(foldername)
 Figname =['Figures/Q3/' foldername '_Boxplot1.jpg'];
-% saveas(gcf, Figname);
+saveas(gcf, Figname);
 
 
 

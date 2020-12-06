@@ -1,4 +1,3 @@
-%dit is het hoofdscript.
 clear all
 close all
 %% loading of files 
