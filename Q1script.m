@@ -51,18 +51,18 @@ info.data = info.data(:,ordering);
 %% boxplot
 figure();
 boxplot(info.data);
-ylim([0 4.5]);
+ylim([0 5.5]);
 set(gca,'XTickLabel',info.label);
 xlabel('Transfersize')
 ylabel('Latency [ms]')
 title('Boxplot of the end to end latency with different packetsizes.')
-saveas(gcf,'Figures/Q1/Boxplot3.png')
+saveas(gcf,'Figures/Q1/Q1Boxplot1.eps','epsc')
 
 figure();
 boxplot(info.data);
-ylim([0 0.6]);
+ylim([0.1 0.6]);
 set(gca,'XTickLabel',info.label);
 xlabel('Transfersize')
 ylabel('Latency [ms]')
 title('Boxplot of the end to end latency with different packetsizes zoomed in.')
-saveas(gcf,'Figures/Q1/Boxplot4.png')
+saveas(gcf,'Figures/Q1/Q1Boxplotzoomed.eps','epsc')
