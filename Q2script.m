@@ -21,12 +21,19 @@ data = info.data;
 conf_interval80 = prctile(data,[10 90]);
 conf_interval98 = prctile(data,[1 99]);
 
-%% generate a boxplot
-
+%% Histogram
 figure();
-boxplot(info.data);
-set(gca,'XTickLabel','Question 2');
-ylabel('Latency [ms]')
-title('Boxplot of transport times.')
-Figname =['Figures/Q2/Boxplot1.jpg'];
-saveas(gcf, Figname);
+data = info.data;
+Xprctlines = prctile(data,[25 50 75]);
+
+histogram(data, 100);
+xline(conf_interval98(1),'--r', "1% = " + num2str(round(conf_interval98(1),3)));
+xline(conf_interval98(2),'--r', "99% = " + num2str(round(conf_interval98(2),3)));
+xline(conf_interval80(1),'--r', "10% = " + num2str(round(conf_interval80(1),3)));
+xline(conf_interval80(2),'--r', "90% = " + num2str(round(conf_interval80(2),3)));
+ylabel('Bin Count');
+xlabel('Latency [ms]');
+title(['Confidence intervals of dataset.']);
+Figname =['Figures/Q2/Histogram.eps'];
+saveas(gcf, Figname, 'epsc');
+

@@ -1,4 +1,4 @@
-function Q3function(foldername, SelectedSizes)
+function [info] = Q3function(foldername, SelectedSizes)
 %Q3FUNCTION Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -64,47 +64,47 @@ info.data = info.data(:,ordering);
 
 
 
-%% boxplot
-foldername = regexprep(foldername, '_', ' ');
-
-
-figure();
-data = info.data(:,SelectedSizes);
-boxplot(data);
-Ymax = max(prctile(data, 99))+0.1;
-Ymin = min(prctile(data, 1));
-ylim([0 Ymax]);
-set(gca,'XTickLabel',info.label(SelectedSizes));
-xlabel('Transfersize')
-ylabel('Latency [ms]')
-title(foldername)
-Figname =['Figures/Q3/' foldername '_Boxplot1.jpg'];
-% saveas(gcf, Figname);
-
-%% Histogram
-nbins = 100;
-[~, NoHistograms] = size(SelectedSizes);
-for k=1:NoHistograms
-    Selected = SelectedSizes(k);
-    figure();
-    data = info.data(:,Selected);
-    
-    Xprctlines = prctile(data,[25 50 75]);
-    
-    xlimits = prctile(data,[1 99]);
-    left = xlimits(1);
-    right = xlimits(2);
-    edges = linspace(left, right, nbins);
-    histogram(data, edges);
-    xlim([left right]);
-    xline(Xprctlines(1),'--r', "Q1 = " + num2str(round(Xprctlines(1),3)));
-    xline(Xprctlines(2),'--r', "Q2 = " + num2str(round(Xprctlines(2),3)));
-    xline(Xprctlines(3),'--r', "Q3 = " + num2str(round(Xprctlines(3),3)));
-    ylabel('Bin Count');
-    xlabel('Latency [ms]');
-    title(append(foldername,' ', info.label(Selected)));
-    Figname =['Figures/Q4/' foldername 'Histogram' info.label(Selected) '.eps','epsc'];
-end
+% %% boxplot
+% foldername = regexprep(foldername, '_', ' ');
+% 
+% 
+% figure();
+% data = info.data(:,SelectedSizes);
+% boxplot(data);
+% Ymax = max(prctile(data, 99))+0.1;
+% Ymin = min(prctile(data, 1));
+% ylim([0 Ymax]);
+% set(gca,'XTickLabel',info.label(SelectedSizes));
+% xlabel('Transfersize')
+% ylabel('Latency [ms]')
+% title(foldername)
+% Figname =['Figures/Q3/' foldername '_Boxplot1.jpg'];
+% % saveas(gcf, Figname);
+% 
+% %% Histogram
+% nbins = 100;
+% [~, NoHistograms] = size(SelectedSizes);
+% for k=1:NoHistograms
+%     Selected = SelectedSizes(k);
+%     figure();
+%     data = info.data(:,Selected);
+%     
+%     Xprctlines = prctile(data,[25 50 75]);
+%     
+%     xlimits = prctile(data,[1 99]);
+%     left = xlimits(1);
+%     right = xlimits(2);
+%     edges = linspace(left, right, nbins);
+%     histogram(data, edges);
+%     xlim([left right]);
+%     xline(Xprctlines(1),'--r', "Q1 = " + num2str(round(Xprctlines(1),3)));
+%     xline(Xprctlines(2),'--r', "Q2 = " + num2str(round(Xprctlines(2),3)));
+%     xline(Xprctlines(3),'--r', "Q3 = " + num2str(round(Xprctlines(3),3)));
+%     ylabel('Bin Count');
+%     xlabel('Latency [ms]');
+%     title(append(foldername,' ', info.label(Selected)));
+%     Figname =['Figures/Q4/' foldername 'Histogram' info.label(Selected) '.eps','epsc'];
+% end
 
 end
 

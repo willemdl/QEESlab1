@@ -1,8 +1,6 @@
-function Q4function(foldername)
+function [info] = Q4function(foldername)
 %Q4FUNCTION Summary of this function goes here
 %   Detailed explanation goes here
-
-
 
 %give the folder containing the .txt files
 % folder = "results12-03/Q3_results_rik/transport_time";
@@ -66,10 +64,10 @@ info.data = info.data(:,ordering);
 %% Histogram
 
 figure();
-data = info.data(:,1);
+data = info.data(2:end,1);
 Xprctlines = prctile(data,[25 50 75]);
 
-Y = prctile(data,[3 97]);
+Y = prctile(data,[1 99]);
 left = Y(1);
 right = Y(2);
 nbins = 100;
@@ -83,14 +81,14 @@ xline(Xprctlines(3),'--r', "Q3 = " + num2str(round(Xprctlines(3),3)));
 ylabel('Bin Count');
 xlabel('Latency [ms]');
 title([foldername ' 256B']);
-Figname =['Figures/Q4/' foldername '_Histogram256B.jpg'];
-% saveas(gcf, Figname);
+Figname =['Figures/Q4/' foldername 'Histogram256B.eps'];
+saveas(gcf, Figname, 'epsc');
 
 figure();
-data = info.data(:,10);
+data = info.data(2:end,10);
 Xprctlines = prctile(data,[25 50 75]);
 
-Y = prctile(data,[3 97]);
+Y = prctile(data,[1 99]);
 left = Y(1);
 right = Y(2);
 edges = linspace(left, right, nbins);
@@ -102,7 +100,6 @@ xline(Xprctlines(3),'--r', "Q3 = " + num2str(round(Xprctlines(3),3)));
 ylabel('Bin Count');
 xlabel('Latency [ms]');
 title([foldername ' 128KB']);
-Figname =['Figures/Q4/' foldername 'Histogram128KB.jpg'];
-% saveas(gcf, Figname);
+Figname =['Figures/Q4/' foldername 'Histogram128KB.eps'];
+saveas(gcf, Figname, 'epsc');
 end
-
