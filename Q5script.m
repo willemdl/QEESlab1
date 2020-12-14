@@ -3,15 +3,15 @@ close all
 
 SelectedSizes = [3 9 14];
 fontsize = 32;
-[info1] = Q3function('non_real_time_no_load', SelectedSizes);
-[info2] = Q3function('non_real_time_with_load', SelectedSizes);
-[info3] = Q3function('real_time_no_load', SelectedSizes);
-[info4] = Q3function('real_time_with_load', SelectedSizes);
+
+[info1] = Q5function('non_real_time_no_load', SelectedSizes);
+[info2] = Q5function('non_real_time_with_load', SelectedSizes);
+[info3] = Q5function('real_time_no_load', SelectedSizes);
+[info4] = Q5function('real_time_with_load', SelectedSizes);
 
 nbins = 100;
 [~, NoResults] = size(SelectedSizes);
 
-% labels = [{["Case" "1"]},{["Case" "1"]},{["Case" "1"]},{["Case" "1"]}];
 labels = [{'Case 1'},{ 'Case 2'},{ 'Case 3'},{ 'Case 4'}];
 
 %% Boxplot 
@@ -24,7 +24,7 @@ for k=1:NoResults
 %     data = info.data(:,SelectedSizes);
     boxplot(data);
     set(gca,'fontsize',fontsize);
-
+    grid on
     Ymax = max(prctile(data, 99))+0.1;
     Ymin = min(prctile(data, 1));
 %     if (k==2)
@@ -38,7 +38,7 @@ for k=1:NoResults
     ylabel('Latency [ms]');
     temp =["Box plot of different cases with packet size of " foldername];
     title(temp);
-    Figname =append('Figures/Q3/', foldername, '_Boxplot.eps');
+    Figname =append('Figures/Q5/', foldername, '_Boxplot.eps');
     saveas(gcf,Figname, 'epsc')
 end
 
@@ -50,6 +50,9 @@ end
 %     data = info.data(:,SelectedSizes);
     boxplot(data);
     set(gca,'fontsize',fontsize);
+    grid on
+
+
     Ymax = max(prctile(data, 99))+0.1;
     Ymin = min(prctile(data, 1));
     ylim([1 14]);
@@ -64,11 +67,11 @@ end
     ylabel('Latency [ms]');
     temp =["Zoomed in box plot of different cases with packet size of " foldername];
     title(temp);
-    Figname =append('Figures/Q3/zoomed', foldername, '_Boxplot.eps');
+    Figname =append('Figures/Q5/zoomed', foldername, '_Boxplot.eps');
     saveas(gcf,Figname, 'epsc')
 
 
-%% Histograms
+% Histograms
 
 %nonreal no load
 for k=1:NoResults
@@ -95,11 +98,11 @@ for k=1:NoResults
     xlabel('Latency [ms]');
     title(temptitle);
     foldername = "non_real_time_without_load";
-    Figname = append('Figures/Q3/', foldername ,'Histogram' ,info1.label(Selected) ,'.eps');
+    Figname = append('Figures/Q5/', foldername ,'Histogram' ,info1.label(Selected) ,'.eps');
     saveas(gcf,Figname,'epsc');
 end
-%nonreal with load
 
+%nonreal with load
 for k=1:NoResults
     foldername = "non real time with load";
     Selected = SelectedSizes(k);
@@ -124,7 +127,7 @@ for k=1:NoResults
     xlabel('Latency [ms]');
     title(temptitle);
     foldername = "non_real_time_with_load";
-    Figname = append('Figures/Q3/', foldername ,'Histogram' ,info2.label(Selected) ,'.eps');
+    Figname = append('Figures/Q5/', foldername ,'Histogram' ,info2.label(Selected) ,'.eps');
     saveas(gcf,Figname,'epsc');
 end
 %real no load
@@ -152,7 +155,7 @@ for k=1:NoResults
     xlabel('Latency [ms]');
     title(temptitle);
     foldername = "real_time_without_load";
-    Figname = append('Figures/Q3/', foldername ,'Histogram' ,info3.label(Selected) ,'.eps');
+    Figname = append('Figures/Q5/', foldername ,'Histogram' ,info3.label(Selected) ,'.eps');
     saveas(gcf,Figname,'epsc');
 end
 %real  load
@@ -169,9 +172,11 @@ for k=1:NoResults
     xlimits = prctile(data,[1 99]);
     left = xlimits(1);
     right = xlimits(2);
+    if info4.label()
     edges = linspace(left, right, nbins);
     histogram(data, edges);
     set(gca,'fontsize',fontsize);
+
     xlim([left right]);
     xline(Xprctlines(1),'--r', "Q1 = " + num2str(round(Xprctlines(1),3)));
     xline(Xprctlines(2),'--r', "Q2 = " + num2str(round(Xprctlines(2),3)));
@@ -180,6 +185,6 @@ for k=1:NoResults
     xlabel('Latency [ms]');
     title(temptitle);
     foldername = "real_time_with_load";
-    Figname = append('Figures/Q3/', foldername ,'Histogram' ,info4.label(Selected) ,'.eps');
+    Figname = append('Figures/Q5/', foldername ,'Histogram' ,info4.label(Selected) ,'.eps');
     saveas(gcf,Figname,'epsc');
 end
